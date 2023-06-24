@@ -108,6 +108,19 @@ export const testData: FeedEvent[] = [
   }
 ]
 
+const stringToColour = (str: string) => {
+  let hash = 0;
+  str.split('').forEach(char => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash)
+  })
+  let colour = '#'
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff
+    colour += value.toString(16).padStart(2, '0')
+  }
+  return colour
+}
+
 function feedEventsByUser(testData: FeedEvent[]) {
   return testData.reduce((acc, feedEvent) => {
     if (!acc.has(feedEvent.user)) {
@@ -120,13 +133,16 @@ function feedEventsByUser(testData: FeedEvent[]) {
 
 export const chartData: ChartData<'line', FeedEvent[]> = {
   datasets: Array.from(feedEventsByUser(testData).entries()).map(([user, feedEvent]) => {
+    const userColor = stringToColour(user);
     return {
       label: user,
       data: feedEvent.sort((a, b) => a.timestamp - b.timestamp),
       parsing: {
         xAxisKey: "timestamp",
         yAxisKey: "fps"
-      }
+      },
+      backgroundColor: userColor,
+      borderColor: userColor
     };
   })
 }
