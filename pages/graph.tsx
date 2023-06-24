@@ -3,10 +3,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { chartData } from './testData';
 
 
-
 const Graph: NextPage = () => {
   return (
     <div>
+      <p>new chart</p>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           width={500}
@@ -19,12 +19,13 @@ const Graph: NextPage = () => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="timestamp" />
+          <XAxis dataKey="timestamp" type="number" />
           <YAxis dataKey="fps" />
           <Tooltip />
           <Legend />
-          {Object.entries(chartData).map(([user, feedEvents]) => {
-            <Line type="monotone" dataKey="fps" name={} />
+          {chartData.forEach((feedEvents, user) => {
+            console.log("****************", user, '  ', feedEvents);
+            <Line type="monotone" dataKey="fps" data={feedEvents} key={user} name={user}/>
           })}
         </LineChart>
       </ResponsiveContainer>

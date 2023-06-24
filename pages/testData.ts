@@ -1,3 +1,12 @@
+export type FeedEvent = {
+  id: number
+  user: string
+  fps: number
+  timestamp: number
+  event: string
+  description: string
+}
+
 export const testData: FeedEvent[] = [
   {
     "id": 0,
@@ -98,7 +107,7 @@ export const testData: FeedEvent[] = [
 ]
 
 export const chartData = testData.reduce((acc, feedEvent) => {
-  if (!acc[feedEvent.user]) acc[feedEvent.user] = [];
-  acc[feedEvent.user].push(feedEvent);
+  if(!acc.has(feedEvent.user)) acc.set(feedEvent.user, []);
+  acc.get(feedEvent.user)?.push(feedEvent);
   return acc;
-}, {});
+}, new Map<string, FeedEvent[]>());
