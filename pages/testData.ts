@@ -1,3 +1,14 @@
+import { ChartData } from 'chart.js';
+
+export type FeedEvent = {
+  id: number
+  user: string
+  fps: number
+  timestamp: number
+  event: string
+  description: string
+}
+
 export const testData: FeedEvent[] = [
   {
     "id": 0,
@@ -96,3 +107,26 @@ export const testData: FeedEvent[] = [
     "description": ""
   }
 ]
+
+function feedEventsByUser(testData: FeedEvent[]) {
+  return testData.reduce((acc, feedEvent) => {
+    if (!acc.has(feedEvent.user)) {
+      acc.set(feedEvent.user, [])
+    }
+    acc.get(feedEvent.user)?.push(feedEvent);
+    return acc;
+  }, new Map<string, FeedEvent[]>());
+}
+
+export const chartData: ChartData<'line', FeedEvent[]> = {
+  datasets: Array.from(feedEventsByUser(testData).entries()).map(([user, feedEvent]) => {
+    return {
+      label: user,
+      data: feedEvent.sort((a, b) => a.timestamp - b.timestamp),
+      parsing: {
+        xAxisKey: "timestamp",
+        yAxisKey: "fps"
+      }
+    };
+  })
+}
