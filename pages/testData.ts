@@ -96,3 +96,9 @@ export const testData: FeedEvent[] = [
     "description": ""
   }
 ]
+
+export const chartData = testData.reduce((acc, feedEvent) => {
+  if (!acc[feedEvent.user]) acc[feedEvent.user] = [];
+  acc[feedEvent.user].push(feedEvent);
+  return acc;
+}, {});
