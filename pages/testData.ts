@@ -136,7 +136,7 @@ export const chartData: ChartData<'line', FeedEvent[]> = {
     const userColor = stringToColour(user);
     return {
       label: user,
-      data: feedEvent.sort((a, b) => a.timestamp - b.timestamp),
+      data: feedEvent.map(event => ({ ...event, timestamp: event.timestamp * 1000 })).sort((a, b) => a.timestamp - b.timestamp),
       parsing: {
         xAxisKey: "timestamp",
         yAxisKey: "fps"

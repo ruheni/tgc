@@ -15,7 +15,3 @@ body {
   flex-direction: column;
   gap: 8px;
 }
-.homePageLinkContainer > a {
-  font-size: 2rem;
-  text-decoration: underline;
-}

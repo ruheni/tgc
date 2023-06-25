@@ -7,7 +7,7 @@ import { FeedEvent, chartData } from './testData';
 Chart.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, TimeSeriesScale, Tooltip);
 
 function toolTipLabel(context: TooltipItem<'line'>){
-  const item = context.raw; // The raw data item for this tooltip.
+  const item = context.raw;
   return JSON.stringify(item, null, 2);
 }
 
