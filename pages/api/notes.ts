@@ -1,9 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient, Note } from "@prisma/client"
+import { Note } from "@prisma/client"
 import { NoteModel } from "../../prisma/zod/note";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../db";
 
 type SingleResponse = {
   note: Note
@@ -39,12 +38,23 @@ const RESTHandlers: { [key: string]: (req: NextApiRequest, res: NextApiResponse<
     }
   },
 
-  'GET': async function (req, res) {
-    const notes = await prisma.note.findMany()
-    res.status(200).json({ notes })
+  'GET': async function (_req, res) {
+    try {
+      const notes = await prisma.note.findMany({
+        where: { deleted: false },
+        orderBy: { created_at: "desc" }
+      })
+      res.status(200).json({ notes })
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: `${err}` });
+    }
   },
 
   'DELETE': async function (req, res) {
+    const note = await prisma.note.findMany({
+      where: { id: '' },
+    });
     res.status(200).json({ message: "post deleted" });
   }
 }

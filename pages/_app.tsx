@@ -27,7 +27,7 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{ marginBottom: "20px" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
             <Link href="/" passHref>
               <Button
                 sx={{
