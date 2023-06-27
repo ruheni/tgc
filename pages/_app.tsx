@@ -13,6 +13,9 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Link from "next/link";
 import { useRouter } from 'next/router'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient();
 
 const pages = ['Notes', 'Graph'];
 
@@ -21,7 +24,7 @@ function ResponsiveAppBar() {
   const theme = useTheme();
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ marginBottom: "20px" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -33,26 +36,21 @@ function ResponsiveAppBar() {
                   bgcolor: router.pathname === '/' ? theme.palette.primary.dark : theme.palette.primary.main,
                   display: 'block'
                 }}
-              >
-                Index
-              </Button>
+              >Home</Button>
             </Link>
             {pages.map((page) => {
               const route = `/${page.toLowerCase()}`;
               const isSelected = router.pathname === route;
               return (
-                <Link href={route} passHref>
+                <Link href={route} passHref key={page}>
                   <Button
-                    key={page}
                     sx={{
                       my: 2,
                       color: isSelected ? theme.palette.primary.contrastText : 'white',
                       bgcolor: isSelected ? theme.palette.primary.dark : theme.palette.primary.main,
                       display: 'block'
                     }}
-                  >
-                    {page}
-                  </Button>
+                  >{page}</Button>
                 </Link>
               )
             })}
@@ -67,10 +65,12 @@ function ResponsiveAppBar() {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
-      <ResponsiveAppBar />
-      <Component {...pageProps} />
-    </div>
+    <QueryClientProvider client={queryClient} >
+      <div>
+        <ResponsiveAppBar />
+        <Component {...pageProps} />
+      </div>
+    </QueryClientProvider >
   );
 }
 

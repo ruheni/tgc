@@ -10,8 +10,7 @@ body {
   box-sizing: border-box;
 }
 
-.homePageLinkContainer {
-  display:flex;
-  flex-direction: column;
-  gap: 8px;
+.homeBox{
+  margin-bottom: 50px;
+  cursor: pointer;
 }
