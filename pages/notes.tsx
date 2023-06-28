@@ -3,7 +3,7 @@ import { Note } from '@prisma/client'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios, { AxiosResponse } from 'axios';
-import { NoteAPIResponse } from "./api/note";
+import { NoteAPIResponse } from "./api/notes";
 import { NoteModel } from "../prisma/zod/note"
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '@mui/material/TextField';
