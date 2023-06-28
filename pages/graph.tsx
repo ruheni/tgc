@@ -2,11 +2,11 @@ import { NextPage } from "next";
 import { TooltipItem, CategoryScale, LinearScale, PointElement, LineElement, TimeScale, TimeSeriesScale, Chart, Tooltip } from "chart.js";
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2';
-import { FeedEvent, chartData } from './testData';
+import { chartData } from '../testData';
 
 Chart.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, TimeSeriesScale, Tooltip);
 
-function toolTipLabel(context: TooltipItem<'line'>){
+function toolTipLabel(context: TooltipItem<'line'>) {
   const item = context.raw;
   return JSON.stringify(item, null, 2);
 }
@@ -33,9 +33,9 @@ const Graph: NextPage = () => {
               }
             }
           },
-          plugins:{
-            tooltip:{
-              callbacks:{
+          plugins: {
+            tooltip: {
+              callbacks: {
                 label: toolTipLabel
               }
             }
