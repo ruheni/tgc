@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { Note } from '@prisma/client'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { NoteAPIResponse } from "./api/notes";
 import { NoteModel } from "../prisma/zod/note"
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -57,12 +57,16 @@ function NoteList() {
     return axios.get<NoteAPIResponse>(notesRoute);
   })
   if (noteQuery.isLoading) return <div>loading notes....</div>;
-  if (noteQuery.isError) return <div>An error occured loading notes: {noteQuery.error.message}</div>;
+  if (noteQuery.isError) return <div>An error occured loading notes: {(noteQuery.error as Error).message}</div>;
   if (noteQuery.isSuccess) {
-    if (!noteQuery.data.data.notes.length) return <div>No Notes Found</div>;
-    return noteQuery.data.data.notes.map((note: Note, index: number) => {
-      return <NoteBox {...note} key={`${note.author}${index}`} />
-    });
+    if (!noteQuery.data.data.notes?.length) return <div>No Notes Found</div>;
+    return (
+      <>
+        {noteQuery.data.data.notes.map((note: Note, index: number) => {
+          return <NoteBox {...note} key={`${note.author}${index}`} />
+        })}
+      </>
+    );
   }
   return null;
 }
@@ -96,7 +100,7 @@ const Notes: NextPage = () => {
       <Box>
         <Typography variant="subtitle1">Create a new note</Typography>
         {mutation.isError ? (
-          <div>An error occured: {mutation.error.message}</div>
+          <div>An error occured: {(mutation.error as Error).message}</div>
         ) : null}
         <form onSubmit={handleSubmit(submitHandler)}>
           <Stack spacing={3}>
