@@ -50,13 +50,6 @@ const RESTHandlers: { [key: string]: (req: NextApiRequest, res: NextApiResponse<
       res.status(500).json({ message: `${err}` });
     }
   },
-
-  'DELETE': async function (req, res) {
-    const note = await prisma.note.findMany({
-      where: { id: '' },
-    });
-    res.status(200).json({ message: "post deleted" });
-  }
 }
 
 export default async function handler(
