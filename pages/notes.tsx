@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { Note } from '@prisma/client'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { NoteAPIResponse } from "./api/notes";
 import { NoteModel } from "../zodnote"
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +17,7 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const notesRoute = `/api/notes`;
 
@@ -32,11 +33,12 @@ function NoteBox(note: Note) {
   });
 
   const clickHandler = () => {
-    mutation.mutate(note);
+    if (mutation.isLoading) return;
+    if (window.confirm('Are you sure you wish to delete this item?')) mutation.mutate(note);
   };
 
   return (
-    <Card sx={{ marginBottom: '20px;' }}>
+    <Card sx={{ marginBottom: '20px;', opacity: mutation.isLoading ? "0.5" : "1" }}>
       <CardHeader
         action={
           <IconButton aria-label="settings" onClick={clickHandler}>
@@ -56,7 +58,7 @@ function NoteList() {
   const noteQuery = useQuery('notes', () => {
     return axios.get<NoteAPIResponse>(notesRoute);
   })
-  if (noteQuery.isLoading) return <div>loading notes....</div>;
+  if (noteQuery.isLoading) return <div>loading notes.... <CircularProgress /></div>;
   if (noteQuery.isError) return <div>An error occured loading notes: {(noteQuery.error as Error).message}</div>;
   if (noteQuery.isSuccess) {
     if (!noteQuery.data.data.notes?.length) return <div>No Notes Found</div>;
@@ -85,8 +87,13 @@ const Notes: NextPage = () => {
   const mutation = useMutation('notes', (newNote: Note) => {
     return axios.post<NoteAPIResponse>(notesRoute, newNote);
   }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('notes')
+    onSuccess: (response: AxiosResponse<NoteAPIResponse>) => {
+      queryClient.setQueryData('notes', (existing: AxiosResponse<NoteAPIResponse> | undefined) => {
+        if (typeof existing !== 'undefined') {
+          response.data.notes = [...response.data.notes || [], ...existing.data.notes || []];
+        }
+        return response;
+      });
     }
   });
 
