@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Note } from "@prisma/client"
-import { NoteModel } from "../../prisma/zod/note";
+import { NoteModel } from "../../zodnote";
 import { prisma } from "../../db";
 
 export type NoteAPIResponse = {

@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { NoteAPIResponse } from "./api/notes";
-import { NoteModel } from "../prisma/zod/note"
+import { NoteModel } from "../zodnote"
 import { zodResolver } from '@hookform/resolvers/zod';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
