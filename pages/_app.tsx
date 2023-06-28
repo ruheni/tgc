@@ -125,9 +125,8 @@ function ResponsiveAppBar() {
               const route = `/${page.toLowerCase()}`;
               const isSelected = router.pathname === route;
               return (
-                <Link href={route} passHref>
+                <Link href={route} key={page} passHref>
                   <Button
-                    key={page}
                     onClick={handleCloseNavMenu}
                     sx={{
                       my: 2,
