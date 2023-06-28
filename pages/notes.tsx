@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { NextPage } from "next";
 import { Note } from '@prisma/client'
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -18,6 +19,7 @@ import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import CircularProgress from '@mui/material/CircularProgress';
+import Collapse from '@mui/material/Collapse';
 
 const notesRoute = `/api/notes`;
 
@@ -37,6 +39,22 @@ function NoteBox(note: Note) {
     if (window.confirm('Are you sure you wish to delete this item?')) mutation.mutate(note);
   };
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [shouldCollapse, setShouldCollapse] = useState(false);
+
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    // check if the height of the text content exceeds the collapsed size
+    if (textRef.current && textRef.current.offsetHeight > 40) {
+      setShouldCollapse(true);
+    }
+  }, []);
+
+  const handleExpandClick = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <Card sx={{ marginBottom: '20px;', opacity: mutation.isLoading ? "0.5" : "1" }}>
       <CardHeader
@@ -48,7 +66,12 @@ function NoteBox(note: Note) {
         title={<Typography variant="subtitle1"><strong>Author:</strong> {note.author}</Typography>}
       />
       <CardContent>
-        <Typography variant="body1">{note.body}</Typography>
+        <Collapse in={isExpanded} collapsedSize={40}>
+          <Typography variant="body1" ref={textRef} style={{ whiteSpace: 'pre-wrap' }}>{note.body}</Typography>
+        </Collapse>
+        {shouldCollapse && <Button color="primary" onClick={handleExpandClick}>
+          {isExpanded ? 'Show Less' : 'Show More'}
+        </Button>}
       </CardContent >
     </Card >
   );

@@ -8,7 +8,7 @@ import Container from '@mui/material/Container';
 
 const Home: NextPage = () => {
   return (
-    <Container maxWidth="sm" className="homePageLinkContainer">
+    <Container maxWidth="sm" className="homePageLinkContainer" sx={{ paddingTop: "25px" }}>
       <Box className="homeBox">
         <Link href="/notes" passHref>
           <Card sx={{ minWidth: 275 }}>

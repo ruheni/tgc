@@ -3,6 +3,7 @@ import { TooltipItem, CategoryScale, LinearScale, PointElement, LineElement, Tim
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2';
 import { chartData } from '../testData';
+import Container from '@mui/material/Container';
 
 Chart.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, TimeSeriesScale, Tooltip);
 
@@ -13,7 +14,7 @@ function toolTipLabel(context: TooltipItem<'line'>) {
 
 const Graph: NextPage = () => {
   return (
-    <div>
+    <Container maxWidth={false} className="homePageLinkContainer">
       <Line
         data={chartData}
         options={{
@@ -42,7 +43,7 @@ const Graph: NextPage = () => {
           }
         }}
       />
-    </div>
+    </Container>
   );
 };
 
