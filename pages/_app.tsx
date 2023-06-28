@@ -88,11 +88,17 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) => {
+                const route = `/${page.toLowerCase()}`;
+                const isSelected = router.pathname === route;
+                return (
+                  <MenuItem key={page} onClick={handleCloseNavMenu} selected={isSelected}>
+                    <Link href={route}>
+                      <Typography textAlign="center">{page}</Typography>
+                    </Link>
+                  </MenuItem>
+                )
+              })}
             </Menu>
           </Box>
 
@@ -140,7 +146,7 @@ function ResponsiveAppBar() {
 
         </Toolbar>
       </Container>
-    </AppBar>
+    </AppBar >
   );
 }
 

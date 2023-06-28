@@ -126,7 +126,7 @@ const Notes: NextPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ paddingTop: "25px" }}>
       <Box>
         <Typography variant="subtitle1">Create a new note</Typography>
         {mutation.isError ? (
