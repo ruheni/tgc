@@ -1,14 +1,18 @@
-import type { NextPage } from "next";
-import Link from "next/link";
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import Container from '@mui/material/Container';
+import type { NextPage } from 'next'
+import Link from 'next/link'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import Typography from '@mui/material/Typography'
+import CardContent from '@mui/material/CardContent'
+import Container from '@mui/material/Container'
 
 const Home: NextPage = () => {
   return (
-    <Container maxWidth="sm" className="homePageLinkContainer" sx={{ paddingTop: "25px" }}>
+    <Container
+      maxWidth="sm"
+      className="homePageLinkContainer"
+      sx={{ paddingTop: '25px' }}
+    >
       <Box className="homeBox">
         <Link href="/notes" passHref>
           <Card sx={{ minWidth: 275 }}>
@@ -32,7 +36,7 @@ const Home: NextPage = () => {
         </Link>
       </Box>
     </Container>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

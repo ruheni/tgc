@@ -1,1 +1,1 @@
-export const notesRoute = `/api/notes`;
+export const notesRoute = `/api/notes`

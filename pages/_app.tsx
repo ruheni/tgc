@@ -1,47 +1,47 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 import './globals.css'
 import type { AppProps } from 'next/app'
-import React from 'react';
-import { useTheme } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Link from "next/link";
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
+import React from 'react'
+import { useTheme } from '@mui/material/styles'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Container from '@mui/material/Container'
+import Button from '@mui/material/Button'
+import Link from 'next/link'
+import Menu from '@mui/material/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
 import { useRouter } from 'next/router'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import MenuItem from '@mui/material/MenuItem';
+import MenuItem from '@mui/material/MenuItem'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
     },
-  }
-});
+  },
+})
 
-const pages = ['Notes', 'Graph'];
+const pages = ['Notes', 'Graph']
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
-  const router = useRouter();
-  const theme = useTheme();
+  const router = useRouter()
+  const theme = useTheme()
 
   return (
     <AppBar position="static">
@@ -95,10 +95,14 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => {
-                const route = `/${page.toLowerCase()}`;
-                const isSelected = router.pathname === route;
+                const route = `/${page.toLowerCase()}`
+                const isSelected = router.pathname === route
                 return (
-                  <MenuItem key={page} onClick={handleCloseNavMenu} selected={isSelected}>
+                  <MenuItem
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    selected={isSelected}
+                  >
                     <Link href={route}>
                       <Typography textAlign="center">{page}</Typography>
                     </Link>
@@ -128,8 +132,8 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => {
-              const route = `/${page.toLowerCase()}`;
-              const isSelected = router.pathname === route;
+              const route = `/${page.toLowerCase()}`
+              const isSelected = router.pathname === route
               return (
                 <Link href={route} key={page} passHref>
                   <Button
@@ -137,34 +141,35 @@ function ResponsiveAppBar() {
                     sx={{
                       my: 2,
                       display: 'block',
-                      color: isSelected ? theme.palette.primary.contrastText : 'white',
-                      bgcolor: isSelected ? theme.palette.primary.dark : theme.palette.primary.main,
+                      color: isSelected
+                        ? theme.palette.primary.contrastText
+                        : 'white',
+                      bgcolor: isSelected
+                        ? theme.palette.primary.dark
+                        : theme.palette.primary.main,
                     }}
                   >
                     {page}
                   </Button>
                 </Link>
               )
-            }
-            )}
+            })}
           </Box>
-
         </Toolbar>
       </Container>
-    </AppBar >
-  );
+    </AppBar>
+  )
 }
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient} >
+    <QueryClientProvider client={queryClient}>
       <div>
         <ResponsiveAppBar />
         <Component {...pageProps} />
       </div>
-    </QueryClientProvider >
-  );
+    </QueryClientProvider>
+  )
 }
 
 export default MyApp
