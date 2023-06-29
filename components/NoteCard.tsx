@@ -39,7 +39,7 @@ export const NoteCard = (note: Note) => {
     if (textRef.current && textRef.current.offsetHeight > 40) {
       setShouldCollapse(true);
     }
-  }, [note.body]);
+  }, [note.body, textRef.current]);
 
   const handleClickOpen = () => {
     if (mutation.isLoading) return;

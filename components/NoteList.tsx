@@ -18,8 +18,8 @@ export const NoteResults = () => {
     if (!noteQuery.data.data.notes?.length) return <div>No Notes Found</div>;
     return (
       <>
-        {noteQuery.data.data.notes.map((note: Note, index: number) => {
-          return <NoteCard {...note} key={`${note.author}${index}`} />
+        {noteQuery.data.data.notes.map((note: Note) => {
+          return <NoteCard {...note} key={note.id} />
         })}
       </>
     );
