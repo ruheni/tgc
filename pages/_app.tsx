@@ -20,7 +20,13 @@ import { useRouter } from 'next/router'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import MenuItem from '@mui/material/MenuItem';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  }
+});
 
 const pages = ['Notes', 'Graph'];
 
