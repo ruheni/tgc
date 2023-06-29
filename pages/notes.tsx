@@ -49,7 +49,7 @@ function NoteCard(note: Note) {
     if (textRef.current && textRef.current.offsetHeight > 40) {
       setShouldCollapse(true);
     }
-  }, []);
+  }, [note.body]);
 
   const handleExpandClick = () => {
     setIsExpanded(!isExpanded);
