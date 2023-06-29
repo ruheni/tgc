@@ -10,14 +10,21 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
-
 import Collapse from '@mui/material/Collapse';
-
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import { notesRoute } from "../constants";
 
 export const NoteCard = (note: Note) => {
   const queryClient = useQueryClient()
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [shouldCollapse, setShouldCollapse] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
 
   const mutation = useMutation('notes', (note: Note) => {
     return axios.delete<NoteAPIResponse>(`${notesRoute}/${note.id}`);
@@ -27,22 +34,22 @@ export const NoteCard = (note: Note) => {
     }
   });
 
-  const clickHandler = () => {
-    if (mutation.isLoading) return;
-    if (window.confirm('Are you sure you wish to delete this item?')) mutation.mutate(note);
-  };
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [shouldCollapse, setShouldCollapse] = useState(false);
-
-  const textRef = useRef<HTMLParagraphElement>(null);
-
   useEffect(() => {
     // check if the height of the text content exceeds the collapsed size
     if (textRef.current && textRef.current.offsetHeight > 40) {
       setShouldCollapse(true);
     }
   }, [note.body]);
+
+  const handleClickOpen = () => {
+    if (mutation.isLoading) return;
+    setOpenDialog(true);
+  };
+
+  const handleClose = (confirm: boolean) => {
+    setOpenDialog(false);
+    if (confirm) mutation.mutate(note);
+  };
 
   const handleExpandClick = () => {
     setIsExpanded(!isExpanded);
@@ -52,7 +59,7 @@ export const NoteCard = (note: Note) => {
     <Card sx={{ marginBottom: '20px;', opacity: mutation.isLoading ? "0.5" : "1" }}>
       <CardHeader
         action={
-          <IconButton aria-label="settings" onClick={clickHandler}>
+          <IconButton aria-label="settings" onClick={handleClickOpen}>
             <ClearIcon />
           </IconButton>
         }
@@ -66,6 +73,28 @@ export const NoteCard = (note: Note) => {
           {isExpanded ? 'Show Less' : 'Show More'}
         </Button>}
       </CardContent >
+
+      <Dialog
+        open={openDialog}
+        onClose={() => handleClose(false)}
+      >
+        <DialogTitle>
+          Confirm Deletion
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you wish to delete this note?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose(false)}>
+            Cancel
+          </Button>
+          <Button onClick={() => handleClose(true)} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card >
   );
 }
