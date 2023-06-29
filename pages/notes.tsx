@@ -23,7 +23,7 @@ import Collapse from '@mui/material/Collapse';
 
 const notesRoute = `/api/notes`;
 
-function NoteBox(note: Note) {
+function NoteCard(note: Note) {
   const queryClient = useQueryClient()
 
   const mutation = useMutation('notes', (note: Note) => {
@@ -88,7 +88,7 @@ function NoteList() {
     return (
       <>
         {noteQuery.data.data.notes.map((note: Note, index: number) => {
-          return <NoteBox {...note} key={`${note.author}${index}`} />
+          return <NoteCard {...note} key={`${note.author}${index}`} />
         })}
       </>
     );
